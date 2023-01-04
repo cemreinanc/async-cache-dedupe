@@ -2,6 +2,7 @@
 
 const StorageRedis = require('./redis')
 const StorageMemory = require('./memory')
+const StorageUpstash = require('./upstash')
 
 /**
  * @typedef {StorageInterface} Storage
@@ -12,7 +13,8 @@ const StorageMemory = require('./memory')
  */
 const StorageOptionsType = {
   redis: 'redis',
-  memory: 'memory'
+  memory: 'memory',
+  upstash: 'upstash'
 }
 
 /**
@@ -27,6 +29,9 @@ const StorageOptionsType = {
  * @returns {StorageMemory|StorageRedis}
  */
 function createStorage (type, options) {
+  if (type === StorageOptionsType.upstash) {
+    return new StorageUpstash(options)
+  }
   if (type === StorageOptionsType.redis) {
     return new StorageRedis(options)
   }
